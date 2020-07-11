@@ -1,29 +1,29 @@
 {
   "CONTACT_PANEL": {
-    "CONVERSATION_TITLE": "Conversation Details",
-    "BROWSER": "Browser",
-    "OS": "Operating System",
-    "INITIATED_FROM": "Initiated from",
-    "INITIATED_AT": "Initiated at",
+    "CONVERSATION_TITLE": "会话详情",
+    "BROWSER": "浏览器",
+    "OS": "操作系统",
+    "INITIATED_FROM": "来源",
+    "INITIATED_AT": "开始时间",
     "CONVERSATIONS": {
-      "NO_RECORDS_FOUND": "There are no previous conversations associated to this contact.",
-      "TITLE": "Previous Conversations"
+      "NO_RECORDS_FOUND": "没有与该客户相关联的先前会话。",
+      "TITLE": "先前会话"
     },
     "LABELS": {
-      "TITLE": "Conversation Labels",
+      "TITLE": "会话标签",
       "MODAL": {
-        "TITLE": "Labels for",
-        "ACTIVE_LABELS": "Labels added to the conversation",
-        "INACTIVE_LABELS": "Labels available in the account",
-        "REMOVE": "Click on X icon to remove the label",
-        "ADD": "Click on + icon to add the label",
-        "UPDATE_BUTTON": "Update labels",
-        "UPDATE_ERROR": "Couldn't update labels, try again."
+        "TITLE": "相关标签",
+        "ACTIVE_LABELS": "该会话的标签",
+        "INACTIVE_LABELS": "可用标签",
+        "REMOVE": "点击 X 删除标签",
+        "ADD": "点击 + 添加标签",
+        "UPDATE_BUTTON": "更新标签",
+        "UPDATE_ERROR": "无法更新标签，请重试。"
       },
-      "NO_LABELS_TO_ADD": "There are no more labels defined in the account.",
-      "NO_AVAILABLE_LABELS": "There are no labels added to this conversation."
+      "NO_LABELS_TO_ADD": "当前账户内没有标签。",
+      "NO_AVAILABLE_LABELS": "没有可以添加给该会话的标签了。"
     },
     "MUTE_CONTACT": "Mute Contact",
-    "EDIT_LABEL": "Edit"
+    "EDIT_LABEL": "编辑"
   }
 }

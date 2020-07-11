@@ -1,15 +1,15 @@
 {
   "REGISTER": {
-    "TRY_WOOT": "Register an account",
-    "TITLE": "Register",
+    "TRY_WOOT": "注册账户",
+    "TITLE": "注册",
     "TERMS_ACCEPT": "By signing up, you agree to our <a href=\"https://www.chatwoot.com/terms\">T & C</a> and <a href=\"https://www.chatwoot.com/privacy-policy\">Privacy policy</a>",
     "ACCOUNT_NAME": {
-      "LABEL": "Account Name",
+      "LABEL": "账户名",
       "PLACEHOLDER": "Wayne Enterprises",
-      "ERROR": "Account Name is too short"
+      "ERROR": "账户名太短了"
     },
     "EMAIL": {
-      "LABEL": "Email",
+      "LABEL": "电子邮箱",
       "PLACEHOLDER": "bruce@wayne.enterprises",
       "ERROR": "Email is invalid"
     },

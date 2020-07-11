@@ -1,6 +1,6 @@
 {
   "CONVERSATION": {
-    "404": "Please select a conversation from left pane",
+    "404": "请从左栏选择一个会话。",
     "NO_MESSAGE_1": "Uh oh! Looks like there are no messages from customers in your inbox.",
     "NO_MESSAGE_2": " to send a message to your page!",
     "NO_INBOX_1": "Hola! Looks like you haven't added any inboxes yet.",
@@ -9,27 +9,27 @@
     "CLICK_HERE": "Click here",
     "LOADING_INBOXES": "Loading inboxes",
     "LOADING_CONVERSATIONS": "Loading Conversations",
-    "DOWNLOAD": "Download",
+    "DOWNLOAD": "下载",
     "HEADER": {
-      "RESOLVE_ACTION": "Resolve",
-      "REOPEN_ACTION": "Reopen",
-      "OPEN": "More",
-      "CLOSE": "Close",
-      "DETAILS": "details"
+      "RESOLVE_ACTION": "解决",
+      "REOPEN_ACTION": "重新打开",
+      "OPEN": "更多",
+      "CLOSE": "关闭",
+      "DETAILS": "详情"
     },
     "FOOTER": {
-      "MSG_INPUT": "Shift + enter for new line. Start with '/' to select a Canned Response.",
-      "PRIVATE_MSG_INPUT": "Shift + enter for new line. This will be visible only to Agents"
+      "MSG_INPUT": "使用 Shift + Enter 换行，按 / 使用快捷回复",
+      "PRIVATE_MSG_INPUT": "使用 Shift + Enter 换行。只有坐席才能看得到这条信息。"
     },
     "REPLYBOX": {
-      "REPLY": "Reply",
-      "PRIVATE_NOTE": "Private Note",
-      "SEND": "Send",
-      "CREATE": "Add Note",
+      "REPLY": "回复",
+      "PRIVATE_NOTE": "内部记录",
+      "SEND": "发送",
+      "CREATE": "添加记录",
       "TWEET": "Tweet"
     },
-    "VISIBLE_TO_AGENTS": "Private Note: Only visible to you and your team",
-    "CHANGE_STATUS": "Conversation status changed",
-    "CHANGE_AGENT": "Conversation Assignee changed"
+    "VISIBLE_TO_AGENTS": "内部记录：只有你和你的团队看得到",
+    "CHANGE_STATUS": "会话状态变更",
+    "CHANGE_AGENT": "会话受派者变更"
   }
 }

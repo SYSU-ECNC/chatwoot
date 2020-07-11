@@ -1,36 +1,36 @@
 {
   "REPORT": {
-    "HEADER": "Reports",
-    "LOADING_CHART": "Loading chart data...",
-    "NO_ENOUGH_DATA": "We've not received enough data points to generate report, Please try again later.",
+    "HEADER": "报表",
+    "LOADING_CHART": "正在加载图表...",
+    "NO_ENOUGH_DATA": "我们还没有收集到足够的数据来生成报表，请稍后重试。",
     "METRICS": [
       {
-        "NAME": "Conversations",
+        "NAME": "会话",
         "KEY": "conversations_count",
         "DESC": "( Total )"
       },
       {
-        "NAME": "Incoming Messages",
+        "NAME": "流入的消息",
         "KEY": "incoming_messages_count",
         "DESC": "( Total )"
       },
       {
-        "NAME": "Outgoing Messages",
+        "NAME": "流出的消息",
         "KEY": "outgoing_messages_count",
         "DESC": "( Total )"
       },
       {
-        "NAME": "First response time",
+        "NAME": "首条响应时间",
         "KEY": "avg_first_response_time",
         "DESC": "( Avg )"
       },
       {
-        "NAME": "Resolution Time",
+        "NAME": "问题解决时间",
         "KEY": "avg_resolution_time",
         "DESC": "( Avg )"
       },
       {
-        "NAME": "Resolution Count",
+        "NAME": "问题解决数",
         "KEY": "resolutions_count",
         "DESC": "( Total )"
       }
@@ -38,11 +38,11 @@
     "DATE_RANGE": [
       {
         "id": 0,
-        "name": "Last 7 days"
+        "name": "最近 7 天"
       },
       {
         "id": 1,
-        "name": "Last 30 days"
+        "name": "最近 30 天"
       }
     ]
   }

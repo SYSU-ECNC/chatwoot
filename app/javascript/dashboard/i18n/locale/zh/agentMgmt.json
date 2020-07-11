@@ -1,32 +1,32 @@
 {
   "AGENT_MGMT": {
-    "HEADER": "Agents",
-    "HEADER_BTN_TXT": "Add Agent",
-    "LOADING": "Fetching Agent List",
-    "SIDEBAR_TXT": "<p><b>Agents</b></p> <p> An <b>Agent</b> is a member of your Customer Support team. </p><p> Agents will be able to view and reply to messages from your users. The list shows all agents currently in your account. </p><p> Click on <b>Add Agent</b> to add a new agent. Agent you add will receive an email with a confirmation link to activate their account, after which they can access Chatwoot and respond to messages. </p><p> Access to Chatwoot's features are based on following roles. </p><p> <b>Agent</b> - Agents with this role can only access inboxes, reports and conversations. They can assign conversations to other agents or themselves and resolve conversations.</p><p> <b>Administrator</b> - Administrator will have access to all Chatwoot features enabled for your account, including settings, along with all of a normal agents' privileges.</p>",
+    "HEADER": "坐席",
+    "HEADER_BTN_TXT": "添加坐席",
+    "LOADING": "正在获取坐席列表",
+    "SIDEBAR_TXT": "<p><b>坐席</b></p> <p> 一位<b>坐席</b>就是您的客户支持团队中的一员。</p><p>坐席能够查看并回复您的用户发来的消息。这个列表列出了您账户中当前所有的坐席。</p><p> 点击<b>添加坐席</b>按钮来添加一个坐席。您添加的坐席将会收到一封邮件，通过邮件中的确认链接可以激活坐席的账户。账户激活之后，他们就可以访问 Chatwoot 来回复用户的消息了。</p><p> Chatwoot 中功能的权限控制是基于下面这些角色的。</p><p> <b>坐席</b> - 带有这种角色的坐席只能使用 Inboxes, reports 和 conversations。他们可以将 conversations 分配给自己或其他坐席，也可以关闭 conversations。</p><p> <b>管理员</b> - 管理员可以使用 Chatwoot 中您的账户启用的所有功能，包括 settings 和其他所有普通坐席的权限。</p>",
     "AGENT_TYPES": [
       {
         "name": "administrator",
-        "label": "Administrator"
+        "label": "管理员"
       },
       {
         "name": "agent",
-        "label": "Agent"
+        "label": "坐席"
       }
     ],
     "LIST": {
-      "404": "There are no agents associated to this account",
-      "TITLE": "Manage agents in your team",
-      "DESC": "You can add/remove agents to/in your team.",
-      "NAME": "Name",
-      "EMAIL": "EMAIL",
-      "STATUS": "Status",
-      "ACTIONS": "Actions",
-      "VERIFIED": "Verified",
-      "VERIFICATION_PENDING": "Verification Pending"
+      "404": "您的账户中没有坐席。",
+      "TITLE": "管理您团队中的坐席",
+      "DESC": "您可以向您的团队里增加或删除坐席。",
+      "NAME": "名称",
+      "EMAIL": "电子邮箱",
+      "STATUS": "状态",
+      "ACTIONS": "操作",
+      "VERIFIED": "已验证",
+      "VERIFICATION_PENDING": "正在等待验证"
     },
     "ADD": {
-      "TITLE": "Add agent to your team",
+      "TITLE": "向您的团队里添加坐席",
       "DESC": "You can add people who will be able to handle support for your inboxes.",
       "CANCEL_BUTTON_TEXT": "Cancel",
       "FORM": {
