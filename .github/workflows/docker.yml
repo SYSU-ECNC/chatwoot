@@ -14,14 +14,16 @@ jobs:
       name: Checkout
       
     - name: Build and push Docker images
-      uses: docker/build-push-action@v1.1.0
+      uses: mr-smithers-excellent/docker-build-push@v3
       with:
         # Username used to log in to a Docker registry. If not set then no login will occur
         username: sysuecnc
         # Password or personal access token used to log in to a Docker registry. If not set then no login will occur
         password: ${{ secrets.DOCKERHUB_TOKEN }}
+        registry: docker.io
         # Docker repository to tag the image with
-        repository: chatwoot
+        image: sysuecnc/chatwoot
         # Path to the Dockerfile (Default is '{path}/Dockerfile')
         dockerfile: docker/Dockerfile
-        build_args: BUNDLE_WITHOUT=development:test,EXECJS_RUNTIME=Disabled,RAILS_ENV=production,RAILS_SERVE_STATIC_FILES=true
+        tags: latest
+        buildArgs: BUNDLE_WITHOUT=development:test,EXECJS_RUNTIME=Disabled,RAILS_ENV=production,RAILS_SERVE_STATIC_FILES=true
