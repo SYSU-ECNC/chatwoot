@@ -1,29 +1,29 @@
 {
   "PROFILE_SETTINGS": {
-    "LINK": "Profile Settings",
-    "TITLE": "Profile Settings",
-    "BTN_TEXT": "Update Profile",
-    "AFTER_EMAIL_CHANGED": "Your profile has been updated successfully, please login again as your login credentials are changed",
+    "LINK": "个人设置",
+    "TITLE": "个人设置",
+    "BTN_TEXT": "更新个人设置",
+    "AFTER_EMAIL_CHANGED": "您的账号信息已经更新，请重新登录。",
     "FORM": {
-      "AVATAR": "Profile Image",
-      "ERROR": "Please fix form errors",
-      "REMOVE_IMAGE": "Remove",
-      "UPLOAD_IMAGE": "Upload image",
-      "UPDATE_IMAGE": "Update image",
+      "AVATAR": "个人头像",
+      "ERROR": "请查看表单中不符合要求的项目",
+      "REMOVE_IMAGE": "删除头像",
+      "UPLOAD_IMAGE": "上传头像",
+      "UPDATE_IMAGE": "更新头像",
       "PROFILE_SECTION": {
-        "TITLE": "Profile",
-        "NOTE": "Your email address is your identity and is used to log in."
+        "TITLE": "账户",
+        "NOTE": "您的电子邮箱地址将作为登录时的凭证。"
       },
       "PASSWORD_SECTION": {
-        "TITLE": "Password",
-        "NOTE": "Updating your password would reset your logins in multiple devices."
+        "TITLE": "密码",
+        "NOTE": "更改密码将导致您在所有设备上退出登录。"
       },
       "ACCESS_TOKEN": {
         "TITLE": "Access Token",
-        "NOTE": "This token can be used if you are building an API based integration"
+        "NOTE": "您在使用 API 集成时需要使用 Access Token。"
       },
       "EMAIL_NOTIFICATIONS_SECTION": {
-        "TITLE": "Email Notifications",
+        "TITLE": "邮件通知",
         "NOTE": "Update your email notification preferences here",
         "CONVERSATION_ASSIGNMENT": "Send email notifications when a conversation is assigned to me",
         "CONVERSATION_CREATION": "Send email notifications when a new conversation is created"
@@ -33,7 +33,7 @@
         "UPDATE_ERROR": "There is an error while updating the preferences, please try again"
       },
       "PUSH_NOTIFICATIONS_SECTION": {
-        "TITLE": "Push Notifications",
+        "TITLE": "推送通知",
         "NOTE": "Update your push notification preferences here",
         "CONVERSATION_ASSIGNMENT": "Send push notifications when a conversation is assigned to me",
         "CONVERSATION_CREATION": "Send push notifications when a new conversation is created",
@@ -41,49 +41,49 @@
         "REQUEST_PUSH": "Enable push notifications"
       },
       "PROFILE_IMAGE": {
-        "LABEL": "Profile Image"
+        "LABEL": "个人头像"
       },
       "NAME": {
-        "LABEL": "Your name",
+        "LABEL": "您的名字",
         "ERROR": "Please enter a valid name",
         "PLACEHOLDER": "Please enter your name, this would be displayed in conversations"
       },
       "AVAILABILITY": {
-        "LABEL": "Availability",
+        "LABEL": "在线状态",
         "STATUSES_LIST": [
           {
             "value": "online",
-            "label": "Online"
+            "label": "在线"
           },
           {
             "value": "busy",
-            "label": "Busy"
+            "label": "忙碌"
           },
           {
             "value": "offline",
-            "label": "Offline"
+            "label": "离线"
           }
         ]
       },
       "EMAIL": {
-        "LABEL": "Your email address",
+        "LABEL": "您的电子邮箱地址",
         "ERROR": "Please enter a valid email address",
         "PLACEHOLDER": "Please enter your email address, this would be displayed in conversations"
       },
       "PASSWORD": {
-        "LABEL": "Password",
+        "LABEL": "密码",
         "ERROR": "Please enter a password of length 6 or more",
         "PLACEHOLDER": "Please enter a new password"
       },
       "PASSWORD_CONFIRMATION": {
-        "LABEL": "Confirm new password",
+        "LABEL": "确认密码",
         "ERROR": "Confirm password should match the password",
         "PLACEHOLDER": "Please re-enter your password"
       }
     }
   },
   "SIDEBAR_ITEMS": {
-    "CHANGE_ACCOUNTS": "Switch Account",
+    "CHANGE_ACCOUNTS": "切换团队",
     "SELECTOR_SUBTITLE": "Select an account from the following list",
     "PROFILE_SETTINGS": "Profile Settings",
     "LOGOUT": "Logout"
@@ -94,33 +94,33 @@
   },
   "COMPONENTS": {
     "CODE": {
-      "BUTTON_TEXT": "Copy",
-      "COPY_SUCCESSFUL": "Code copied to clipboard successfully"
+      "BUTTON_TEXT": "复制",
+      "COPY_SUCCESSFUL": "已复制到剪贴板"
     },
     "FILE_BUBBLE": {
-      "DOWNLOAD": "Download",
-      "UPLOADING": "Uploading..."
+      "DOWNLOAD": "下载",
+      "UPLOADING": "上传中..."
     },
     "FORM_BUBBLE": {
-      "SUBMIT": "Submit"
+      "SUBMIT": "提交"
     }
   },
-  "CONFIRM_EMAIL": "Verifying...",
+  "CONFIRM_EMAIL": "等待验证...",
   "SETTINGS": {
     "INBOXES": {
-      "NEW_INBOX": "Add Inbox"
+      "NEW_INBOX": "添加渠道"
     }
   },
   "SIDEBAR": {
-    "CONVERSATIONS": "Conversations",
-    "REPORTS": "Reports",
-    "SETTINGS": "Settings",
-    "HOME": "Home",
-    "AGENTS": "Agents",
-    "INBOXES": "Inboxes",
-    "CANNED_RESPONSES": "Canned Responses",
-    "INTEGRATIONS": "Integrations",
-    "ACCOUNT_SETTINGS": "Account Settings",
-    "LABELS": "Labels"
+    "CONVERSATIONS": "会话",
+    "REPORTS": "报表",
+    "SETTINGS": "设置",
+    "HOME": "主页",
+    "AGENTS": "坐席",
+    "INBOXES": "渠道",
+    "CANNED_RESPONSES": "快捷回复",
+    "INTEGRATIONS": "集成",
+    "ACCOUNT_SETTINGS": "团队设置",
+    "LABELS": "标签"
   }
 }

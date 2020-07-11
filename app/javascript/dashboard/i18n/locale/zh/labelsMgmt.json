@@ -1,7 +1,7 @@
 {
   "LABEL_MGMT": {
-    "HEADER": "Labels",
-    "HEADER_BTN_TXT": "Add label",
+    "HEADER": "标签",
+    "HEADER_BTN_TXT": "添加标签",
     "LOADING": "Fetching labels",
     "SEARCH_404": "There are no items matching this query",
     "SIDEBAR_TXT": "<p><b>Labels</b> <p>Labels help you to categorize conversations and prioritize them. You can assign label to a conversation from the sidepanel. <br /><br />Labels are tied to the account and can be used to create custom workflows in your organization. You can assign custom color to a label, it makes it easier to identify the label. You will be able to display the label on the sidebar to filter the conversations easily.</p>",

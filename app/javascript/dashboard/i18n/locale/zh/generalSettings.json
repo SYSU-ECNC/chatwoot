@@ -1,30 +1,30 @@
 {
   "GENERAL_SETTINGS": {
-    "TITLE": "Account settings",
-    "SUBMIT": "Update settings",
-    "BACK": "Back",
+    "TITLE": "团队设置",
+    "SUBMIT": "更新设置",
+    "BACK": "返回",
     "UPDATE": {
       "ERROR": "Could not update settings, try again!",
-      "SUCCESS": "Successfully updated account settings"
+      "SUCCESS": "成功更新团队设置"
     },
     "FORM": {
       "ERROR": "Please fix form errors",
       "GENERAL_SECTION": {
-        "TITLE": "General settings",
+        "TITLE": "一般设置",
         "NOTE": ""
       },
       "NAME": {
-        "LABEL": "Account name",
+        "LABEL": "团队名称",
         "PLACEHOLDER": "Your account name",
         "ERROR": "Please enter a valid account name"
       },
       "LANGUAGE": {
-        "LABEL": "Site language (Beta)",
+        "LABEL": "语言 (测试版)",
         "PLACEHOLDER": "Your account name",
         "ERROR": ""
       },
       "DOMAIN": {
-        "LABEL": "Domain",
+        "LABEL": "域名",
         "PLACEHOLDER": "Your website domain",
         "ERROR": ""
       },

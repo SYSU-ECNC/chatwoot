@@ -1,6 +1,6 @@
 {
   "INTEGRATION_SETTINGS": {
-    "HEADER": "Integrations",
+    "HEADER": "集成",
     "WEBHOOK": {
       "TITLE": "Webhook",
       "CONFIGURE": "Configure",

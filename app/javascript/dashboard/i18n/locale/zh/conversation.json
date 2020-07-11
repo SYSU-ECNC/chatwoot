@@ -13,9 +13,9 @@
     "HEADER": {
       "RESOLVE_ACTION": "解决",
       "REOPEN_ACTION": "重新打开",
-      "OPEN": "更多",
-      "CLOSE": "关闭",
-      "DETAILS": "详情"
+      "OPEN": "展开详情",
+      "CLOSE": "收起详情",
+      "DETAILS": ""
     },
     "FOOTER": {
       "MSG_INPUT": "使用 Shift + Enter 换行，按 / 使用快捷回复",
