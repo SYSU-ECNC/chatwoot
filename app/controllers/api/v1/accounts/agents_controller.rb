@@ -54,13 +54,12 @@ class Api::V1::Accounts::AgentsController < Api::V1::Accounts::BaseController
   end
 
   def agent_params
-    params.require(:agent).permit(:email, :name, :role)
+    params.require(:agent).permit(:email, :name, :role, :confirmed, :password, :password_confirmation)
   end
 
   def new_agent_params
-    time = Time.now.to_i
-    params.require(:agent).permit(:email, :name, :role)
-          .merge!(password: time, password_confirmation: time, inviter: current_user)
+    params.require(:agent).permit(:email, :name, :role, :confirmed, :password, :password_confirmation)
+          .merge!(inviter: current_user)
   end
 
   def agents

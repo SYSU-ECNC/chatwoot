@@ -15,7 +15,7 @@
       }
     ],
     "LIST": {
-      "404": "您的账户中没有坐席。",
+      "404": "您的团队中没有坐席。",
       "TITLE": "管理您团队中的坐席",
       "DESC": "您可以向您的团队里增加或删除坐席。",
       "NAME": "名称",
@@ -38,6 +38,11 @@
           "LABEL": "Agent Type",
           "PLACEHOLDER": "Please select a type",
           "ERROR": "Agent type is required"
+        },
+        "PASSWORD": {
+          "LABEL": "密码",
+          "PLACEHOLDER": "请输入密码",
+          "ERROR": "密码是必填项"
         },
         "EMAIL": {
           "LABEL": "Email Address",
