@@ -25,5 +25,5 @@ jobs:
         image: sysuecnc/chatwoot
         # Path to the Dockerfile (Default is '{path}/Dockerfile')
         dockerfile: docker/Dockerfile
-        tags: latest
+        tag: latest
         buildArgs: BUNDLE_WITHOUT=development:test,EXECJS_RUNTIME=Disabled,RAILS_ENV=production,RAILS_SERVE_STATIC_FILES=true
