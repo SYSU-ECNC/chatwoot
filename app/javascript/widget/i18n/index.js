@@ -10,6 +10,7 @@ import { default as nl } from './locale/nl.json';
 import { default as pt } from './locale/pt.json';
 import { default as pt_BR } from './locale/pt_BR.json';
 import { default as fa } from './locale/fa.json';
+import { default as zh } from './locale/zh.json';
 
 export default {
   ar,
