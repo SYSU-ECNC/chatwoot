@@ -16,7 +16,7 @@
 #'true': 'foo'
 #To learn more, please read the Rails Internationalization guide
 #available at https://guides.rubyonrails.org/i18n.html.
-zh-TW:
+zh:
   hello: "Hello world"
   messages:
     reset_password_success: Woot! Request for password reset is successful. Check your mail for instructions.
@@ -36,7 +36,7 @@ zh-TW:
         assigned: "%{user_name} 将会话分配给了 %{assignee_name}"
         removed: "%{user_name} 把会话标记为尚未分配"
     templates:
-      greeting_message_body: "%{account_name} typically replies in a few hours."
+      greeting_message_body: "%{account_name} 通常会很快回复您。"
       ways_to_reach_you_message_body: "为了给您更好地提供服务，请输入您的邮箱（推荐中大邮箱）。"
       email_input_box_message_body: "请放心，您的邮箱不会被透露给其他人。"
     reply:
