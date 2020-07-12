@@ -4,7 +4,7 @@
     "LOAD_MORE_CONVERSATIONS": "加载更多会话",
     "EOF": "没别的会话啦 🎉",
     "LIST": {
-      "404": "当前组别内没有活跃的会话了。"
+      "404": "这里是空的。"
     },
     "TAB_HEADING": "会话",
     "SEARCH": {

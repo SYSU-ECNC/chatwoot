@@ -77,9 +77,14 @@ class User < ApplicationRecord
   has_many :notification_subscriptions, dependent: :destroy
 
   before_validation :set_password_and_uid, on: :create
+  before_save :auto_confirm, on: :create
 
   after_create :create_access_token
   after_save :update_presence_in_redis, if: :saved_change_to_availability?
+
+  def auto_confirms
+    self.skip_confirmation!
+  end
 
   def send_devise_notification(notification, *args)
     devise_mailer.send(notification, self, *args).deliver_later

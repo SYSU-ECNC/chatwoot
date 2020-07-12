@@ -84,9 +84,9 @@
   },
   "SIDEBAR_ITEMS": {
     "CHANGE_ACCOUNTS": "切换团队",
-    "SELECTOR_SUBTITLE": "Select an account from the following list",
-    "PROFILE_SETTINGS": "Profile Settings",
-    "LOGOUT": "Logout"
+    "SELECTOR_SUBTITLE": "请选择要切换到的团队",
+    "PROFILE_SETTINGS": "个人设置",
+    "LOGOUT": "登出"
   },
   "APP_GLOBAL": {
     "TRIAL_MESSAGE": "days trial remaining.",
