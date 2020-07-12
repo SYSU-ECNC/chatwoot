@@ -82,7 +82,7 @@ class User < ApplicationRecord
   after_create :create_access_token
   after_save :update_presence_in_redis, if: :saved_change_to_availability?
 
-  def auto_confirms
+  def auto_confirm
     self.skip_confirmation!
   end
 
