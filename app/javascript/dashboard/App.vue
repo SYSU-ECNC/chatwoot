@@ -13,6 +13,8 @@ import { mapGetters } from 'vuex';
 import WootSnackbarBox from './components/SnackbarContainer';
 import { accountIdFromPathname } from './helper/URLHelper';
 
+import moment from 'moment';
+
 export default {
   name: 'App',
 
@@ -40,6 +42,7 @@ export default {
         await this.$store.dispatch('accounts/get');
         const { locale } = this.getAccount(accountId);
         Vue.config.lang = locale;
+        moment.locale(locale);
       }
     },
   },
