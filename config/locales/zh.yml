@@ -30,14 +30,14 @@ zh-TW:
   conversations:
     activity:
       status:
-        resolved: "Conversation was marked resolved by %{user_name}"
-        open: "Conversation was reopened by %{user_name}"
+        resolved: "会话已被 %{user_name} 标记为已解决"
+        open: "会话被 %{user_name} 重新标记为尚未解决"
       assignee:
-        assigned: "Assigned to %{assignee_name} by %{user_name}"
-        removed: "Conversation unassigned by %{user_name}"
+        assigned: "%{user_name} 将会话分配给了 %{assignee_name}"
+        removed: "%{user_name} 把会话标记为尚未分配"
     templates:
       greeting_message_body: "%{account_name} typically replies in a few hours."
-      ways_to_reach_you_message_body: "Give the team a way to reach you."
-      email_input_box_message_body: "Get notified by email"
+      ways_to_reach_you_message_body: "为了给您更好地提供服务，请输入您的邮箱（推荐中大邮箱）。"
+      email_input_box_message_body: "请放心，您的邮箱不会被透露给其他人。"
     reply:
       email_subject: "New messages on this conversation"
