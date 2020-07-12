@@ -77,7 +77,7 @@ class User < ApplicationRecord
   has_many :notification_subscriptions, dependent: :destroy
 
   before_validation :set_password_and_uid, on: :create
-  before_save :auto_confirm, on: :create
+  before_create :auto_confirm
 
   after_create :create_access_token
   after_save :update_presence_in_redis, if: :saved_change_to_availability?
