@@ -31,19 +31,6 @@
             </span>
           </label>
         </div>
-
-        <div class="medium-12 columns">
-          <label :class="{ error: $v.agentPassword.$error }">
-            {{ $t('AGENT_MGMT.EDIT.FORM.PASSWORD.LABEL') }}
-            <input
-              v-model="agentPassword"
-              type="password"
-              :placeholder="$t('AGENT_MGMT.EDIT.FORM.PASSWORD.PLACEHOLDER')"
-              @input="$v.agentPassword.$touch"
-            />
-          </label>
-        </div>
-
         <div class="medium-12 modal-footer">
           <div class="medium-6 columns">
             <woot-submit-button
@@ -114,7 +101,6 @@ export default {
     agentType: {
       required,
     },
-    agentPassword: {},
   },
   computed: {
     pageTitle() {
@@ -138,10 +124,6 @@ export default {
           id: this.id,
           name: this.agentName,
           role: this.agentType.name.toLowerCase(),
-          ...(this.agentPassword ? {
-            password: this.agentPassword,
-            password_confirmation: this.agentPassword,
-          } : {}),
         });
         this.showAlert(this.$t('AGENT_MGMT.EDIT.API.SUCCESS_MESSAGE'));
         this.onClose();
