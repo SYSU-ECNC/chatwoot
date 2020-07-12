@@ -177,7 +177,7 @@ export const IFrameHelper = {
     });
   },
   toggleCloseButton: () => {
-    if (window.matchMedia('(max-width: 668px)').matches) {
+    if (window.$chatwoot.isClosable && window.matchMedia('(max-width: 668px)').matches) {
       IFrameHelper.sendMessage('toggle-close-button', {
         showClose: true,
       });

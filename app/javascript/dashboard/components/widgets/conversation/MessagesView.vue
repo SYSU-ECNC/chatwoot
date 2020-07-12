@@ -18,7 +18,7 @@
       />
       <li v-show="getUnreadCount != 0" class="unread--toast">
         <span>
-          {{ getUnreadCount }} UNREAD MESSAGE{{ getUnreadCount > 1 ? 'S' : '' }}
+          {{ getUnreadCount }} 条未读消息
         </span>
       </li>
       <message
@@ -34,7 +34,7 @@
           <img
             class="gif"
             src="~dashboard/assets/images/typing.gif"
-            alt="Someone is typing"
+            alt="正在输入"
           />
         </div>
       </div>

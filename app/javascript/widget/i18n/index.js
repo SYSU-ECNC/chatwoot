@@ -25,4 +25,5 @@ export default {
   pt,
   pt_BR,
   fa,
+  zh,
 };
