@@ -94,7 +94,7 @@
           </label>
         </a>
       </div>
-      <div class="modal-footer delete-item">
+      <div v-if="false" class="modal-footer delete-item">
         <button
           class="button success large expanded nice"
           @click="createAccount"
