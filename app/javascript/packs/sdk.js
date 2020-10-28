@@ -37,6 +37,7 @@ const runSDK = ({ baseUrl, websiteToken }) => {
     position: chatwootSettings.position === 'left' ? 'left' : 'right',
     websiteToken,
     locale: chatwootSettings.locale,
+    isClosable: chatwootSettings.isClosable && true,
     type: getBubbleView(chatwootSettings.type),
     launcherTitle: chatwootSettings.launcherTitle || '',
     showPopoutButton: chatwootSettings.showPopoutButton || false,
