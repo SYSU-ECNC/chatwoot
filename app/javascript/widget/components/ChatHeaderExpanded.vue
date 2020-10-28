@@ -1,18 +1,25 @@
 <template>
-  <header class="header-expanded">
-    <img v-if="avatarUrl" class="logo" :src="avatarUrl" />
-    <span class="close close-button" @click="closeWindow"></span>
-    <h2 class="title" v-html="introHeading"></h2>
-    <p class="body" v-html="introBody"></p>
+  <header class="header-expanded py-8 px-6 bg-white relative box-border w-full">
+    <div class="flex justify-between items-start">
+      <img v-if="avatarUrl" class="logo" :src="avatarUrl" />
+      <header-actions :show-popout-button="showPopoutButton" />
+    </div>
+    <h2
+      class="text-slate-900 mt-6 text-4xl mb-3 font-normal"
+      v-html="introHeading"
+    />
+    <p class="text-lg text-black-700 leading-normal" v-html="introBody" />
   </header>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
-import { IFrameHelper } from 'widget/helpers/utils';
-
+import HeaderActions from './HeaderActions';
 export default {
   name: 'ChatHeaderExpanded',
+  components: {
+    HeaderActions,
+  },
   props: {
     avatarUrl: {
       type: String,
@@ -26,57 +33,28 @@ export default {
       type: String,
       default: '',
     },
+    showPopoutButton: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     ...mapGetters({
       widgetColor: 'appConfig/getWidgetColor',
     }),
   },
-  methods: {
-    closeWindow() {
-      if (IFrameHelper.isIFrame()) {
-        IFrameHelper.sendMessage({
-          event: 'toggleBubble',
-        });
-      }
-    },
-  },
 };
 </script>
 
 <style scoped lang="scss">
-@import '~widget/assets/scss/variables.scss';
 @import '~widget/assets/scss/mixins.scss';
 
 .header-expanded {
-  padding: $space-large $space-medium $space-large;
-  width: 100%;
-  box-sizing: border-box;
-  position: relative;
+  @include shadow-large;
 
   .logo {
     width: 56px;
     height: 56px;
-  }
-
-  .close {
-    position: absolute;
-    right: $space-medium;
-    top: $space-medium;
-    display: none;
-  }
-  .title {
-    color: $color-heading;
-    font-size: $font-size-mega;
-    font-weight: $font-weight-normal;
-    margin-bottom: $space-slab;
-    margin-top: $space-medium;
-  }
-
-  .body {
-    color: $color-body;
-    font-size: 1.8rem;
-    line-height: 1.5;
   }
 }
 </style>

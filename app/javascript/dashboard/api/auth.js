@@ -118,7 +118,12 @@ export default {
     return axios.post(urlData.url, { email });
   },
 
-  profileUpdate({ password, password_confirmation, ...profileAttributes }) {
+  profileUpdate({
+    password,
+    password_confirmation,
+    displayName,
+    ...profileAttributes
+  }) {
     const formData = new FormData();
     Object.keys(profileAttributes).forEach(key => {
       const value = profileAttributes[key];
@@ -126,10 +131,17 @@ export default {
         formData.append(`profile[${key}]`, value);
       }
     });
+    formData.append('profile[display_name]', displayName || '');
     if (password && password_confirmation) {
       formData.append('profile[password]', password);
       formData.append('profile[password_confirmation]', password_confirmation);
     }
     return axios.put(endPoints('profileUpdate').url, formData);
+  },
+
+  updateAvailability({ availability }) {
+    return axios.put(endPoints('profileUpdate').url, {
+      profile: { availability },
+    });
   },
 };

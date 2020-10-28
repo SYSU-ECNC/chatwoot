@@ -8,7 +8,7 @@
       <div class="medium-12 columns text-center">
         <div class="website--code">
           <woot-code
-            v-if="currentInbox.website_token"
+            v-if="currentInbox.web_widget_script"
             :script="currentInbox.web_widget_script"
           >
           </woot-code>
@@ -18,6 +18,14 @@
             v-if="isATwilioInbox"
             lang="html"
             :script="twilioCallbackURL"
+          >
+          </woot-code>
+        </div>
+        <div class="medium-6 small-offset-3">
+          <woot-code
+            v-if="isAEmailInbox"
+            lang="html"
+            :script="currentInbox.forward_to_address"
           >
           </woot-code>
         </div>
@@ -53,6 +61,9 @@ export default {
     isATwilioInbox() {
       return this.currentInbox.channel_type === 'Channel::TwilioSms';
     },
+    isAEmailInbox() {
+      return this.currentInbox.channel_type === 'Channel::Email';
+    },
     message() {
       if (this.isATwilioInbox) {
         return `${this.$t('INBOX_MGMT.FINISH.MESSAGE')}. ${this.$t(
@@ -60,7 +71,11 @@ export default {
         )}`;
       }
 
-      if (!this.currentInbox.website_token) {
+      if (this.isAEmailInbox) {
+        return this.$t('INBOX_MGMT.ADD.EMAIL_CHANNEL.FINISH_MESSAGE');
+      }
+
+      if (!this.currentInbox.web_widget_script) {
         return this.$t('INBOX_MGMT.FINISH.MESSAGE');
       }
       return this.$t('INBOX_MGMT.FINISH.WEBSITE_SUCCESS');

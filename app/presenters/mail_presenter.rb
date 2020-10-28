@@ -12,7 +12,7 @@ class MailPresenter < SimpleDelegator
   end
 
   def text_content
-    @decoded_text_content ||= encode_to_unicode(text_part&.body&.decoded || '')
+    @decoded_text_content ||= encode_to_unicode(text_part&.decoded || fallback_content)
     @text_content ||= {
       full: @decoded_text_content,
       reply: extract_reply(@decoded_text_content)[:reply],
@@ -21,12 +21,16 @@ class MailPresenter < SimpleDelegator
   end
 
   def html_content
-    @decoded_html_content ||= encode_to_unicode(html_part&.body&.decoded || '')
+    @decoded_html_content ||= encode_to_unicode(html_part&.decoded || fallback_content)
     @html_content ||= {
       full: @decoded_html_content,
       reply: extract_reply(@decoded_html_content)[:reply],
       quoted: extract_reply(@decoded_html_content)[:quoted_text]
     }
+  end
+
+  def fallback_content
+    body&.decoded || ''
   end
 
   def attachments
@@ -66,6 +70,8 @@ class MailPresenter < SimpleDelegator
   # forcing the encoding of the content to UTF-8 so as to be compatible with database and serializers
   def encode_to_unicode(str)
     current_encoding = str.encoding.name
+    return str if current_encoding == 'UTF-8'
+
     str.encode(current_encoding, 'UTF-8', invalid: :replace, undef: :replace, replace: '?')
   end
 
@@ -85,18 +91,30 @@ class MailPresenter < SimpleDelegator
   end
 
   def quoted_text_regexes
-    sender_agnostic_regexes = [
+    return sender_agnostic_regexes if @account.nil? || account_support_email.blank?
+
+    [
+      Regexp.new("From:\s* #{Regexp.escape(account_support_email)}", Regexp::IGNORECASE),
+      Regexp.new("<#{Regexp.escape(account_support_email)}>", Regexp::IGNORECASE),
+      Regexp.new("#{Regexp.escape(account_support_email)}\s+wrote:", Regexp::IGNORECASE),
+      Regexp.new("On(.*)#{Regexp.escape(account_support_email)}(.*)wrote:", Regexp::IGNORECASE)
+    ] + sender_agnostic_regexes
+  end
+
+  def sender_agnostic_regexes
+    @sender_agnostic_regexes ||= [
       Regexp.new("^.*On.*(\n)?wrote:$", Regexp::IGNORECASE),
+      Regexp.new('^.*On(.*)(.*)wrote:$', Regexp::IGNORECASE),
       Regexp.new("-+original\s+message-+\s*$", Regexp::IGNORECASE),
       Regexp.new("from:\s*$", Regexp::IGNORECASE)
     ]
-    return sender_agnostic_regexes if @account.nil? || @account.support_email.blank?
+  end
 
-    [
-      Regexp.new("From:\s*" + Regexp.escape(@account.support_email), Regexp::IGNORECASE),
-      Regexp.new('<' + Regexp.escape(@account.support_email) + '>', Regexp::IGNORECASE),
-      Regexp.new(Regexp.escape(@account.support_email) + "\s+wrote:", Regexp::IGNORECASE),
-      Regexp.new('On(.*)' + Regexp.escape(@account.support_email) + '(.*)wrote:', Regexp::IGNORECASE)
-    ] + sender_agnostic_regexes
+  def account_support_email
+    @account_support_email ||= begin
+      @account.support_email ||
+        GlobalConfig.get('MAILER_SUPPORT_EMAIL')['MAILER_SUPPORT_EMAIL'] ||
+        ENV.fetch('MAILER_SENDER_EMAIL', nil)
+    end
   end
 end

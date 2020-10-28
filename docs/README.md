@@ -5,7 +5,7 @@ path: '/docs'
 
 This guide will help you get started with Chatwoot!
 
-### Environment Setup
+### Environment Setup for local development
 
 * [Mac](/docs/installation-guide-mac-os)
 * [Ubuntu](/docs/installation-guide-ubuntu)
@@ -19,7 +19,7 @@ This guide will help you get started with Chatwoot!
 * [Conversation Continuity with Email](/docs/conversation-continuity)
 * [Common Errors](/docs/common-errors)
 
-### Deployment
+### Deploying Chatwoot in Production
 
 * [Architecture](/docs/deployment/architecture)
 * [Heroku](/docs/deployment/deploy-chatwoot-with-heroku) (recommended)

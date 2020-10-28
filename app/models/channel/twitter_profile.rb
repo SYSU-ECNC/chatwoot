@@ -26,6 +26,14 @@ class Channel::TwitterProfile < ApplicationRecord
 
   before_destroy :unsubscribe
 
+  def name
+    'Twitter'
+  end
+
+  def has_24_hour_messaging_window?
+    false
+  end
+
   def create_contact_inbox(profile_id, name, additional_attributes)
     ActiveRecord::Base.transaction do
       contact = inbox.account.contacts.create!(additional_attributes: additional_attributes, name: name)
@@ -55,7 +63,7 @@ class Channel::TwitterProfile < ApplicationRecord
   def unsubscribe
     ### Fix unsubscription with new endpoint
     unsubscribe_response = twitter_client.remove_subscription(user_id: profile_id)
-    Rails.logger.info 'TWITTER_UNSUBSCRIBE: ' + unsubscribe_response.body.to_s
+    Rails.logger.info "TWITTER_UNSUBSCRIBE: #{unsubscribe_response.body}"
   rescue StandardError => e
     Rails.logger.info e
   end

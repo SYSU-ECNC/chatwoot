@@ -6,7 +6,11 @@ class Facebook::SendOnFacebookService < Base::SendOnChannelService
   end
 
   def perform_reply
-    FacebookBot::Bot.deliver(delivery_params, access_token: message.channel_token)
+    result = FacebookBot::Bot.deliver(delivery_params, access_token: message.channel_token)
+    message.update!(source_id: JSON.parse(result)['message_id'])
+  rescue Facebook::Messenger::FacebookError => e
+    Rails.logger.info e
+    channel.authorization_error!
   end
 
   def fb_text_message_params
@@ -17,17 +21,24 @@ class Facebook::SendOnFacebookService < Base::SendOnChannelService
   end
 
   def fb_attachment_message_params
+    attachment = message.attachments.first
     {
       recipient: { id: contact.get_source_id(inbox.id) },
       message: {
         attachment: {
-          type: 'image',
+          type: attachment_type(attachment),
           payload: {
-            url: message.attachments.first.file_url
+            url: attachment.file_url
           }
         }
       }
     }
+  end
+
+  def attachment_type(attachment)
+    return attachment.file_type if %w[image audio video file].include? attachment.file_type
+
+    'file'
   end
 
   def fb_message_params

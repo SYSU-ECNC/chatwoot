@@ -16,13 +16,17 @@
         {{ $t('CONVERSATION.DOWNLOAD') }}
       </a>
     </div>
-    <span class="time">{{ readableTime }}</span>
   </div>
 </template>
 
 <script>
 export default {
-  props: ['url', 'readableTime'],
+  props: {
+    url: {
+      type: String,
+      required: true,
+    },
+  },
   computed: {
     fileName() {
       const filename = this.url.substring(this.url.lastIndexOf('/') + 1);
@@ -31,7 +35,7 @@ export default {
   },
   methods: {
     openLink() {
-      const win = window.open(this.url, '_blank');
+      const win = window.open(this.url, '_blank', 'noopener');
       win.focus();
     },
   },
@@ -59,6 +63,7 @@ export default {
     margin: 0;
     color: $color-white;
     font-weight: $font-weight-bold;
+    word-break: break-word;
   }
 
   .button {

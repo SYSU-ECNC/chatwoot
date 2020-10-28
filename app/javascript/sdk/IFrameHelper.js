@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie';
-import { wootOn, loadCSS, addClass, removeClass } from './DOMHelpers';
+import { wootOn, addClass, loadCSS, removeClass } from './DOMHelpers';
 import {
   body,
   widgetHolder,
@@ -12,7 +12,11 @@ import {
   createNotificationBubble,
   onClickChatBubble,
   onBubbleClick,
+  setBubbleText,
 } from './bubbleHelpers';
+import { dispatchWindowEvent } from 'shared/helpers/CustomEventHelper';
+
+const EVENT_NAME = 'chatwoot:ready';
 
 export const IFrameHelper = {
   getUrl({ baseUrl, websiteToken }) {
@@ -29,8 +33,9 @@ export const IFrameHelper = {
 
     iframe.id = 'chatwoot_live_chat_widget';
     iframe.style.visibility = 'hidden';
-    const HolderclassName = `woot-widget-holder woot--hide woot-elements--${window.$chatwoot.position}`;
-    addClass(widgetHolder, HolderclassName);
+
+    const holderClassName = `woot-widget-holder woot--hide woot-elements--${window.$chatwoot.position}`;
+    addClass(widgetHolder, holderClassName);
     widgetHolder.appendChild(iframe);
     body.appendChild(widgetHolder);
     IFrameHelper.initPostMessageCommunication();
@@ -66,9 +71,7 @@ export const IFrameHelper = {
     };
   },
   initWindowSizeListener: () => {
-    wootOn(window, 'resize', () => {
-      IFrameHelper.toggleCloseButton();
-    });
+    wootOn(window, 'resize', () => IFrameHelper.toggleCloseButton());
   },
   preventDefaultScroll: () => {
     widgetHolder.addEventListener('wheel', event => {
@@ -89,20 +92,29 @@ export const IFrameHelper = {
     loaded: message => {
       Cookies.set('cw_conversation', message.config.authToken, {
         expires: 365,
+        sameSite: 'Lax',
       });
       window.$chatwoot.hasLoaded = true;
       IFrameHelper.sendMessage('config-set', {
         locale: window.$chatwoot.locale,
         position: window.$chatwoot.position,
         hideMessageBubble: window.$chatwoot.hideMessageBubble,
+        showPopoutButton: window.$chatwoot.showPopoutButton,
       });
-      IFrameHelper.onLoad(message.config.channelConfig);
+      IFrameHelper.onLoad({
+        widgetColor: message.config.channelConfig.widgetColor,
+      });
       IFrameHelper.setCurrentUrl();
       IFrameHelper.toggleCloseButton();
 
       if (window.$chatwoot.user) {
         IFrameHelper.sendMessage('set-user', window.$chatwoot.user);
       }
+      dispatchWindowEvent(EVENT_NAME);
+    },
+
+    setBubbleLabel(message) {
+      setBubbleText(window.$chatwoot.launcherTitle || message.label);
     },
 
     toggleBubble: () => {
@@ -173,7 +185,8 @@ export const IFrameHelper = {
   },
   setCurrentUrl: () => {
     IFrameHelper.sendMessage('set-current-url', {
-      refererURL: window.location.href,
+      referrerURL: window.location.href,
+      referrerHost: window.location.host,
     });
   },
   toggleCloseButton: () => {

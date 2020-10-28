@@ -1,19 +1,44 @@
 <template>
   <header class="header-collapsed">
     <div class="header-branding">
-      <img v-if="avatarUrl" :src="avatarUrl" alt="avatar" />
-      <h2 class="title" v-html="title"></h2>
+      <img
+        v-if="avatarUrl"
+        class="inbox--avatar mr-3"
+        :src="avatarUrl"
+        alt="avatar"
+      />
+      <div>
+        <div class="text-black-900 font-medium text-base flex items-center">
+          <span class="mr-1" v-html="title" />
+          <div
+            :class="
+              `status-view--badge rounded-full leading-4 ${
+                availableAgents.length ? 'bg-green-500' : 'hidden'
+              }`
+            "
+          />
+        </div>
+        <div class="text-xs mt-1 text-black-700">
+          {{ replyTimeStatus }}
+        </div>
+      </div>
     </div>
-    <span class="close-button" @click="closeWindow"></span>
+    <header-actions :show-popout-button="showPopoutButton" />
   </header>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
-import { IFrameHelper } from 'widget/helpers/utils';
+import HeaderActions from './HeaderActions';
+import configMixin from 'widget/mixins/configMixin';
+import teamAvailabilityMixin from 'widget/mixins/teamAvailabilityMixin';
 
 export default {
   name: 'ChatHeader',
+  components: {
+    HeaderActions,
+  },
+  mixins: [configMixin, teamAvailabilityMixin],
   props: {
     avatarUrl: {
       type: String,
@@ -23,20 +48,19 @@ export default {
       type: String,
       default: '',
     },
+    showPopoutButton: {
+      type: Boolean,
+      default: false,
+    },
+    availableAgents: {
+      type: Array,
+      default: () => {},
+    },
   },
   computed: {
     ...mapGetters({
       widgetColor: 'appConfig/getWidgetColor',
     }),
-  },
-  methods: {
-    closeWindow() {
-      if (IFrameHelper.isIFrame()) {
-        IFrameHelper.sendMessage({
-          event: 'toggleBubble',
-        });
-      }
-    },
   },
 };
 </script>
@@ -51,7 +75,8 @@ export default {
   padding: $space-two $space-medium;
   width: 100%;
   box-sizing: border-box;
-  color: $color-white;
+  background: white;
+  @include shadow-large;
 
   .header-branding {
     display: flex;
@@ -63,19 +88,17 @@ export default {
   }
 
   .title {
-    font-size: $font-size-large;
     font-weight: $font-weight-medium;
-    color: $color-heading;
   }
 
-  img {
-    height: 24px;
-    width: 24px;
-    margin-right: $space-small;
+  .inbox--avatar {
+    height: 32px;
+    width: 32px;
   }
+}
 
-  .close-button {
-    display: none;
-  }
+.status-view--badge {
+  height: $space-small;
+  width: $space-small;
 }
 </style>

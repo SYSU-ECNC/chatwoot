@@ -9,12 +9,12 @@
 #  confirmed_at           :datetime
 #  current_sign_in_at     :datetime
 #  current_sign_in_ip     :string
+#  display_name           :string
 #  email                  :string
 #  encrypted_password     :string           default(""), not null
 #  last_sign_in_at        :datetime
 #  last_sign_in_ip        :string
 #  name                   :string           not null
-#  nickname               :string
 #  provider               :string           default("email"), not null
 #  pubsub_token           :string
 #  remember_created_at    :datetime
@@ -41,7 +41,6 @@ class User < ApplicationRecord
   include Avatarable
   # Include default devise modules.
   include DeviseTokenAuth::Concerns::User
-  include Events::Types
   include Pubsubable
   include Rails.application.routes.url_helpers
   include Reportable
@@ -79,12 +78,13 @@ class User < ApplicationRecord
   before_validation :set_password_and_uid, on: :create
   before_create :auto_confirm
 
-  after_create :create_access_token
+  after_create_commit :create_access_token
   after_save :update_presence_in_redis, if: :saved_change_to_availability?
 
   def auto_confirm
     self.skip_confirmation!
   end
+  scope :order_by_full_name, -> { order('lower(name) ASC') }
 
   def send_devise_notification(notification, *args)
     devise_mailer.send(notification, self, *args).deliver_later
@@ -102,12 +102,25 @@ class User < ApplicationRecord
     account_users.find_by(account_id: Current.account.id) if Current.account
   end
 
+  def available_name
+    self[:display_name].presence || name
+  end
+
   def account
     current_account_user&.account
   end
 
   def assigned_inboxes
     inboxes.where(account_id: Current.account.id)
+  end
+
+  alias avatar_img_url avatar_url
+  def avatar_url
+    if avatar_img_url == ''
+      hash = Digest::MD5.hexdigest(email)
+      return "https://www.gravatar.com/avatar/#{hash}?d=404"
+    end
+    avatar_img_url
   end
 
   def administrator?
@@ -127,14 +140,14 @@ class User < ApplicationRecord
   end
 
   def serializable_hash(options = nil)
-    serialized_user = super(options).merge(confirmed: confirmed?)
-    serialized_user
+    super(options).merge(confirmed: confirmed?)
   end
 
   def push_event_data
     {
       id: id,
       name: name,
+      available_name: available_name,
       avatar_url: avatar_url,
       type: 'user',
       availability_status: availability_status

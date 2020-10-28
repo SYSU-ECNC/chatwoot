@@ -17,10 +17,9 @@
 #
 
 class Channel::FacebookPage < ApplicationRecord
-  # FIXME: this should be removed post 1.4 release. we moved avatars to inbox
-  include Avatarable
-
   self.table_name = 'channel_facebook_pages'
+
+  include Reauthorizable
 
   validates :account_id, presence: true
   validates :page_id, uniqueness: { scope: :account_id }
@@ -30,6 +29,14 @@ class Channel::FacebookPage < ApplicationRecord
 
   after_create_commit :subscribe
   before_destroy :unsubscribe
+
+  def name
+    'Facebook'
+  end
+
+  def has_24_hour_messaging_window?
+    true
+  end
 
   def subscribe
     # ref https://developers.facebook.com/docs/messenger-platform/reference/webhook-events

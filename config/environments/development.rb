@@ -30,7 +30,7 @@ Rails.application.configure do
   config.public_file_server.enabled = true
 
   # Store uploaded files on the local file system (see config/storage.yml for options).
-  config.active_storage.service = :local
+  config.active_storage.service = ENV.fetch('ACTIVE_STORAGE_SERVICE', 'local').to_sym
 
   config.active_job.queue_adapter = :sidekiq
 
@@ -102,7 +102,7 @@ Rails.application.configure do
 
   # Use a different logger for distributed setups.
   # require 'syslog/logger'
-  config.logger = ActiveSupport::Logger.new(Rails.root.join('log', Rails.env + '.log'), 1, ENV.fetch('LOG_SIZE', '1024').to_i.megabytes)
+  config.logger = ActiveSupport::Logger.new(Rails.root.join('log', "#{Rails.env}.log"), 1, ENV.fetch('LOG_SIZE', '1024').to_i.megabytes)
 
   # Bullet configuration to fix the N+1 queries
   config.after_initialize do

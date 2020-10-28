@@ -47,6 +47,7 @@ Rails.application.routes.draw do
           end
           resources :conversations, only: [:index, :create, :show] do
             get 'meta', on: :collection
+            get 'search', on: :collection
             scope module: :conversations do
               resources :messages, only: [:index, :create]
               resources :assignments, only: [:create]
@@ -54,6 +55,8 @@ Rails.application.routes.draw do
             end
             member do
               post :mute
+              post :unmute
+              post :transcript
               post :toggle_status
               post :toggle_typing_status
               post :update_last_seen
@@ -61,8 +64,13 @@ Rails.application.routes.draw do
           end
 
           resources :contacts, only: [:index, :show, :update, :create] do
+            collection do
+              get :active
+              get :search
+            end
             scope module: :contacts do
               resources :conversations, only: [:index]
+              resources :contact_inboxes, only: [:create]
             end
           end
 
@@ -92,6 +100,15 @@ Rails.application.routes.draw do
             resources :apps, only: [:index, :show]
             resource :slack, only: [:create, :update, :destroy], controller: 'slack'
           end
+
+          namespace :kbase do
+            resources :portals do
+              resources :categories do
+                resources :folders
+              end
+              resources :articles
+            end
+          end
         end
       end
       # end of account scoped api routes
@@ -113,6 +130,7 @@ Rails.application.routes.draw do
           collection do
             post :update_last_seen
             post :toggle_typing
+            post :transcript
           end
         end
         resource :contact, only: [:update]

@@ -6,6 +6,7 @@
 #
 #  id                     :integer          not null, primary key
 #  channel_type           :string
+#  email_address          :string
 #  enable_auto_assignment :boolean          default(TRUE)
 #  greeting_enabled       :boolean          default(FALSE)
 #  greeting_message       :string
@@ -46,6 +47,8 @@ class Inbox < ApplicationRecord
 
   after_destroy :delete_round_robin_agents
 
+  scope :order_by_name, -> { order('lower(name) ASC') }
+
   def add_member(user_id)
     member = inbox_members.new(user_id: user_id)
     member.save!
@@ -62,6 +65,10 @@ class Inbox < ApplicationRecord
 
   def web_widget?
     channel.class.name.to_s == 'Channel::WebWidget'
+  end
+
+  def inbox_type
+    channel.name
   end
 
   def webhook_data

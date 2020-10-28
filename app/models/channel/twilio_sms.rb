@@ -31,6 +31,10 @@ class Channel::TwilioSms < ApplicationRecord
   has_one :inbox, as: :channel, dependent: :destroy
 
   def name
-    'Twilio SMS'
+    medium == 'sms' ? 'Twilio SMS' : 'Whatsapp'
+  end
+
+  def has_24_hour_messaging_window?
+    medium == 'whatsapp'
   end
 end

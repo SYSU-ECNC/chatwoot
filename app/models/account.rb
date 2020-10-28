@@ -16,8 +16,6 @@
 class Account < ApplicationRecord
   # used for single column multi flags
   include FlagShihTzu
-
-  include Events::Types
   include Reportable
   include Featurable
 
@@ -26,7 +24,7 @@ class Account < ApplicationRecord
   }.freeze
 
   ACCOUNT_SETTINGS_FLAGS = {
-    1 => :domain_emails_enabled
+    1 => :custom_email_domain_enabled
   }.freeze
 
   validates :name, presence: true
@@ -43,16 +41,21 @@ class Account < ApplicationRecord
   has_many :twilio_sms, dependent: :destroy, class_name: '::Channel::TwilioSms'
   has_many :twitter_profiles, dependent: :destroy, class_name: '::Channel::TwitterProfile'
   has_many :web_widgets, dependent: :destroy, class_name: '::Channel::WebWidget'
+  has_many :email_channels, dependent: :destroy, class_name: '::Channel::Email'
+  has_many :api_channels, dependent: :destroy, class_name: '::Channel::Api'
   has_many :canned_responses, dependent: :destroy
   has_many :webhooks, dependent: :destroy
   has_many :labels, dependent: :destroy
   has_many :notification_settings, dependent: :destroy
   has_many :hooks, dependent: :destroy, class_name: 'Integrations::Hook'
+  has_many :kbase_portals, dependent: :destroy, class_name: '::Kbase::Portal'
+  has_many :kbase_categories, dependent: :destroy, class_name: '::Kbase::Category'
+  has_many :kbase_articles, dependent: :destroy, class_name: '::Kbase::Article'
   has_flags ACCOUNT_SETTINGS_FLAGS.merge(column: 'settings_flags').merge(DEFAULT_QUERY_SETTING)
 
   enum locale: LANGUAGES_CONFIG.map { |key, val| [val[:iso_639_1_code], key] }.to_h
 
-  after_create :notify_creation
+  after_create_commit :notify_creation
   after_destroy :notify_deletion
 
   def agents
