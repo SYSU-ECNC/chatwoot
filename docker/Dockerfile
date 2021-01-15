@@ -26,6 +26,7 @@ RUN apk update \
     nodejs \
     yarn \
     git \
+    python3 \
   && mkdir -p /var/app \
   && gem install bundler
 
