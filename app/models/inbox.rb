@@ -11,6 +11,8 @@
 #  greeting_enabled       :boolean          default(FALSE)
 #  greeting_message       :string
 #  name                   :string           not null
+#  out_of_office_message  :string
+#  working_hours_enabled  :boolean          default(FALSE)
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  account_id             :integer          not null
@@ -24,12 +26,12 @@
 class Inbox < ApplicationRecord
   include Reportable
   include Avatarable
+  include OutOfOffisable
 
   validates :account_id, presence: true
 
   belongs_to :account
 
-  # TODO: should add associations for the channel types
   belongs_to :channel, polymorphic: true, dependent: :destroy
 
   has_many :contact_inboxes, dependent: :destroy

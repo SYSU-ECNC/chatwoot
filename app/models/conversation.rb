@@ -32,8 +32,11 @@
 #
 
 class Conversation < ApplicationRecord
+  include Labelable
+
   validates :account_id, presence: true
   validates :inbox_id, presence: true
+  before_validation :validate_additional_attributes
 
   enum status: { open: 0, resolved: 1, bot: 2 }
 
@@ -50,14 +53,15 @@ class Conversation < ApplicationRecord
   has_many :messages, dependent: :destroy, autosave: true
 
   before_create :set_bot_conversation
-  before_create :set_display_id, unless: :display_id?
+
   # wanted to change this to after_update commit. But it ended up creating a loop
   # reinvestigate in future and identity the implications
   after_update :notify_status_change, :create_activity
-  after_create_commit :notify_conversation_creation
+  after_create_commit :notify_conversation_creation, :queue_conversation_auto_resolution_job
   after_save :run_round_robin
+  after_commit :set_display_id, unless: :display_id?
 
-  acts_as_taggable_on :labels
+  delegate :auto_resolve_duration, to: :account
 
   def can_reply?
     return true unless inbox&.channel&.has_24_hour_messaging_window?
@@ -73,10 +77,6 @@ class Conversation < ApplicationRecord
     update!(assignee: agent)
   end
 
-  def update_labels(labels = nil)
-    update!(label_list: labels)
-  end
-
   def toggle_status
     # FIXME: implement state machine with aasm
     self.status = open? ? :resolved : :open
@@ -87,14 +87,16 @@ class Conversation < ApplicationRecord
   def mute!
     resolved!
     Redis::Alfred.setex(mute_key, 1, mute_period)
+    create_muted_message
   end
 
   def unmute!
     Redis::Alfred.delete(mute_key)
+    create_unmuted_message
   end
 
   def muted?
-    !Redis::Alfred.get(mute_key).nil?
+    Redis::Alfred.get(mute_key).present?
   end
 
   def lock!
@@ -135,6 +137,10 @@ class Conversation < ApplicationRecord
 
   private
 
+  def validate_additional_attributes
+    self.additional_attributes = {} unless additional_attributes.is_a?(Hash)
+  end
+
   def set_bot_conversation
     self.status = :bot if inbox.agent_bot_inbox&.active?
   end
@@ -143,25 +149,30 @@ class Conversation < ApplicationRecord
     dispatcher_dispatch(CONVERSATION_CREATED)
   end
 
+  def queue_conversation_auto_resolution_job
+    return unless auto_resolve_duration
+
+    AutoResolveConversationsJob.set(wait_until: (last_activity_at || created_at) + auto_resolve_duration.days).perform_later(id)
+  end
+
   def self_assign?(assignee_id)
     assignee_id.present? && Current.user&.id == assignee_id
   end
 
   def set_display_id
-    self.display_id = loop do
-      next_display_id = account.conversations.maximum('display_id').to_i + 1
-      break next_display_id unless account.conversations.exists?(display_id: next_display_id)
-    end
+    reload
   end
 
   def create_activity
-    return unless Current.user
-
-    user_name = Current.user.name
-
-    create_status_change_message(user_name) if saved_change_to_status?
+    user_name = Current.user.name if Current.user.present?
+    status_change_activity(user_name) if saved_change_to_status?
     create_assignee_change(user_name) if saved_change_to_assignee_id?
     create_label_change(user_name) if saved_change_to_label_list?
+  end
+
+  def status_change_activity(user_name)
+    create_status_change_message(user_name)
+    queue_conversation_auto_resolution_job if open?
   end
 
   def activity_message_params(content)
@@ -208,13 +219,19 @@ class Conversation < ApplicationRecord
   end
 
   def create_status_change_message(user_name)
-    content = I18n.t("conversations.activity.status.#{status}", user_name: user_name)
+    content = if user_name
+                I18n.t("conversations.activity.status.#{status}", user_name: user_name)
+              elsif resolved?
+                I18n.t('conversations.activity.status.auto_resolved', duration: auto_resolve_duration)
+              end
 
-    messages.create(activity_message_params(content))
+    messages.create(activity_message_params(content)) if content
   end
 
   def create_assignee_change(user_name)
-    params = { assignee_name: assignee.name, user_name: user_name }.compact
+    return unless user_name
+
+    params = { assignee_name: assignee&.name, user_name: user_name }.compact
     key = assignee_id ? 'assigned' : 'removed'
     key = 'self_assigned' if self_assign? assignee_id
     content = I18n.t("conversations.activity.assignee.#{key}", **params)
@@ -223,6 +240,8 @@ class Conversation < ApplicationRecord
   end
 
   def create_label_change(user_name)
+    return unless user_name
+
     previous_labels, current_labels = previous_changes[:label_list]
     return unless (previous_labels.is_a? Array) && (current_labels.is_a? Array)
 
@@ -248,11 +267,34 @@ class Conversation < ApplicationRecord
     messages.create(activity_message_params(content))
   end
 
+  def create_muted_message
+    return unless Current.user
+
+    params = { user_name: Current.user.name }
+    content = I18n.t('conversations.activity.muted', **params)
+
+    messages.create(activity_message_params(content))
+  end
+
+  def create_unmuted_message
+    return unless Current.user
+
+    params = { user_name: Current.user.name }
+    content = I18n.t('conversations.activity.unmuted', **params)
+
+    messages.create(activity_message_params(content))
+  end
+
   def mute_key
-    format('CONVERSATION::%<id>d::MUTED', id: id)
+    format(Redis::RedisKeys::CONVERSATION_MUTE_KEY, id: id)
   end
 
   def mute_period
     6.hours
+  end
+
+  # creating db triggers
+  trigger.before(:insert).for_each(:row) do
+    "NEW.display_id := nextval('conv_dpid_seq_' || NEW.account_id);"
   end
 end

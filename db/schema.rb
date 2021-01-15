@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_19_173944) do
+ActiveRecord::Schema.define(version: 2021_01_13_045116) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -49,6 +49,8 @@ ActiveRecord::Schema.define(version: 2020_10_19_173944) do
     t.string "support_email", limit: 100
     t.integer "settings_flags", default: 0, null: false
     t.integer "feature_flags", default: 0, null: false
+    t.integer "auto_resolve_duration"
+    t.string "timezone", default: "UTC"
   end
 
   create_table "action_mailbox_inbound_emails", force: :cascade do |t|
@@ -280,6 +282,8 @@ ActiveRecord::Schema.define(version: 2020_10_19_173944) do
     t.boolean "greeting_enabled", default: false
     t.string "greeting_message"
     t.string "email_address"
+    t.boolean "working_hours_enabled", default: false
+    t.string "out_of_office_message"
     t.index ["account_id"], name: "index_inboxes_on_account_id"
   end
 
@@ -288,7 +292,9 @@ ActiveRecord::Schema.define(version: 2020_10_19_173944) do
     t.jsonb "serialized_value", default: {}, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "locked", default: true, null: false
     t.index ["name", "created_at"], name: "index_installation_configs_on_name_and_created_at", unique: true
+    t.index ["name"], name: "index_installation_configs_on_name", unique: true
   end
 
   create_table "integrations_hooks", force: :cascade do |t|
@@ -424,6 +430,23 @@ ActiveRecord::Schema.define(version: 2020_10_19_173944) do
     t.index ["user_id"], name: "index_notifications_on_user_id"
   end
 
+  create_table "platform_app_permissibles", force: :cascade do |t|
+    t.bigint "platform_app_id", null: false
+    t.string "permissible_type", null: false
+    t.bigint "permissible_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["permissible_type", "permissible_id"], name: "index_platform_app_permissibles_on_permissibles"
+    t.index ["platform_app_id", "permissible_id", "permissible_type"], name: "unique_permissibles_index", unique: true
+    t.index ["platform_app_id"], name: "index_platform_app_permissibles_on_platform_app_id"
+  end
+
+  create_table "platform_apps", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "super_admins", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -497,6 +520,7 @@ ActiveRecord::Schema.define(version: 2020_10_19_173944) do
     t.datetime "updated_at", null: false
     t.string "pubsub_token"
     t.integer "availability", default: 0
+    t.jsonb "ui_settings", default: {}
     t.index ["email"], name: "index_users_on_email"
     t.index ["pubsub_token"], name: "index_users_on_pubsub_token", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -513,10 +537,39 @@ ActiveRecord::Schema.define(version: 2020_10_19_173944) do
     t.index ["account_id", "url"], name: "index_webhooks_on_account_id_and_url", unique: true
   end
 
+  create_table "working_hours", force: :cascade do |t|
+    t.bigint "inbox_id"
+    t.bigint "account_id"
+    t.integer "day_of_week", null: false
+    t.boolean "closed_all_day", default: false
+    t.integer "open_hour"
+    t.integer "open_minutes"
+    t.integer "close_hour"
+    t.integer "close_minutes"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["account_id"], name: "index_working_hours_on_account_id"
+    t.index ["inbox_id"], name: "index_working_hours_on_inbox_id"
+  end
+
   add_foreign_key "account_users", "accounts"
   add_foreign_key "account_users", "users"
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "contact_inboxes", "contacts"
   add_foreign_key "contact_inboxes", "inboxes"
   add_foreign_key "conversations", "contact_inboxes"
+  create_trigger("accounts_after_insert_row_tr", :generated => true, :compatibility => 1).
+      on("accounts").
+      after(:insert).
+      for_each(:row) do
+    "execute format('create sequence IF NOT EXISTS conv_dpid_seq_%s', NEW.id);"
+  end
+
+  create_trigger("conversations_before_insert_row_tr", :generated => true, :compatibility => 1).
+      on("conversations").
+      before(:insert).
+      for_each(:row) do
+    "NEW.display_id := nextval('conv_dpid_seq_' || NEW.account_id);"
+  end
+
 end
